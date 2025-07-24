@@ -46,11 +46,15 @@ jobs:
 
       - name: Install pipreqs
         run: pip install pipreqs
-
+      
       - name: Run pipreqs on PR branch
         run: |
-          pipreqs . --force
+          pipreqs ./ --ignore .venv,.env,venv --force
           cp requirements.txt pr-requirements.txt
+      # - name: Run pipreqs on PR branch
+      #   run: |
+      #     pipreqs . --force
+      #     cp requirements.txt pr-requirements.txt
 
       - name: Checkout main branch
         run: |
