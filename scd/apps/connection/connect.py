@@ -55,4 +55,4 @@ class SpotifyConnection():
         # TODO: how to securely store access token so it is not available to external users?
         # TODO: create github workflow that updates readme with 3rd party libraries (repos/official websites) used in project
         self.token = access_token
-        return self.token # token obj, actual token stored in access_token['access_token']
+        return self.token # token obj, actual token stored in access_token['access_token'] or self.token['access_token']
