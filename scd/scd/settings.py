@@ -126,8 +126,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # environment variables for Spotify API, get client ID and secret from .env if running django app locally
 if 'runserver' in sys.argv:
-    os.environ.setdefault('CLIENT_ID', '14c41bc44d824ca7891607a6537c1bb8')
-    os.environ.setdefault('CLIENT_SECRET', '17eaa77e309e48c7bacc9bd4b776ff64')
+    CLIENT_ID = os.environ.get('CLIENT_ID', '14c41bc44d824ca7891607a6537c1bb8')
+    CLIENT_SECRET = os.environ.get('CLIENT_SECRET', '17eaa77e309e48c7bacc9bd4b776ff64')
 
 # CLIENT_ID = '14c41bc44d824ca7891607a6537c1bb8'
 # CLIENT_SECRET = '17eaa77e309e48c7bacc9bd4b776ff64'
