@@ -15,7 +15,6 @@ class SpotifyConnection():
         self.redirect_uri = 'https://127.0.0.1:3000/callback'
         self.client_id = settings.CLIENT_ID
         self.client_secret = settings.CLIENT_SECRET
-        self.pkce_token = settings.PCKE_TOKEN
         self.scope = [
             "user-read-email",
             "playlist-read-collaborative"
