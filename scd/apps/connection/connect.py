@@ -19,7 +19,7 @@ class SpotifyConnection():
             "user-read-email",
             "playlist-read-collaborative"
         ]
-        self.token = self.login()
+        self.token = None
         self.headers = {'Content-Type': 'application/x-www-form-urlencoded'}
         self.auth_info = HTTPBasicAuth(self.client_id, self.client_secret)
         self.code_verifier = self.generate_code_verifier()
@@ -33,8 +33,6 @@ class SpotifyConnection():
 
     @property
     def login(self):
-        access_token = None
-
         spotify_client = OAuth2Client(
             client_id=self.client_id,
             client_secret=self.client_secret,
