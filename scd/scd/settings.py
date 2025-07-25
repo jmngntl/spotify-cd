@@ -125,6 +125,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # environment variables for Spotify API, get client ID and secret from .env if running django app locally
+# defaults to Spotify for WebDev 'spotify-cd' project client ID and client secret
 if 'runserver' in sys.argv:
     CLIENT_ID = os.environ.get('CLIENT_ID', '14c41bc44d824ca7891607a6537c1bb8')
     CLIENT_SECRET = os.environ.get('CLIENT_SECRET', '17eaa77e309e48c7bacc9bd4b776ff64')
