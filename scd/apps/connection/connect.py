@@ -1,3 +1,4 @@
+import collections
 import logging
 import secrets
 
@@ -19,42 +20,70 @@ class SpotifyConnection():
             "user-read-email",
             "playlist-read-collaborative"
         ]
-        self.token = None
+        self._token = None
+        self.token_attrs = None
         self.headers = {'Content-Type': 'application/x-www-form-urlencoded'}
         self.auth_info = HTTPBasicAuth(self.client_id, self.client_secret)
         self.code_verifier = self.generate_code_verifier()
-
+        self.login()
 
     @staticmethod
     def generate_code_verifier():
         """Generate a secure code verifier for PKCE."""
         return secrets.token_urlsafe(64)
 
-
     @property
-    def login(self):
+    def token(self):
+        """
+        Property to dynamically fetch token upon class initialization. Retrieve token by calling <class_inst>.token.
+        """
+        # TODO: in view where API is called and token is used use whlie condition to check if token has expired -- while response.status_code == httpx.codes.OK .. look into .elapsed attr from httpx docs could set OR condition in while to check if .elapsed < token keep alive time, if not refersh token
+        # TODO: look into Spotify API docs for expires_at in access token response.. is this in UTC? 
+        if self._token is None:
+            self._token = self.token_attrs.access_token
+        return self._token
+
+    def get_token_attrs(self, token_data):
+        """
+        Convert token data dict to namedtuple for dot notation access
+        """
+        return collections.namedtuple('TokenAttributes', token_data.keys())(**token_data)
+
+    def set_ouath2_client(self):
+        """
+        Set up OAuth2 clients with required Spotify API authentication parameters.
+        """
         spotify_client = OAuth2Client(
             client_id=self.client_id,
             client_secret=self.client_secret,
             redirect_uri=self.redirect_uri,
             scope=self.scope,
         )
+        return spotify_client
 
-        # authorize access to user data
-        auth_resp, auth_state = spotify_client.create_authorization_url(
-            url=self.auth_url,
-            code_verifier=self.code_verifier # use PKCE
-        )
+    def login(self):
+        """
+        Authorize access to user spotify data using OAuth2.
+        """
+        spotify_client = self.set_ouath2_client()
+        try:
+            # Authorize access to user data
+            auth_resp, auth_state = spotify_client.create_authorization_url(
+                url=self.auth_url,
+                code_verifier=self.code_verifier  # use PKCE
+            )
+            logger.info(f'Authorization URL: {auth_resp}')
+            logger.info('Please complete the authorization in your browser.')
 
-        # generate access token
-        access_token = spotify_client.fetch_token(
-            url=self.token_url,
-            auth=self.auth_info,
-            headers=self.headers
-        )
-        # TODO: how to securely store access token so it is not available to external users?
-        # TODO: create github workflow that updates readme with 3rd party libraries (repos/official websites) used in project
-        if access_token:
-            self.token = access_token
-            logger.debug("Successfully logged in to Spotify.")
-        return self.token # token obj, actual token stored in access_token['access_token'] or self.token['access_token']
+            # Fetch the access token
+            token_data = spotify_client.fetch_token(
+                url=self.token_url,
+                auth=self.auth_info,
+                headers=self.headers
+            )
+            logger.info(f'Token data fetched successfully: {token_data}')
+            self.token_attrs = self.get_token_attrs(token_data)
+            return self.token_attrs
+        except Exception as e:
+            logger.error(f'Error during login: {e}')
+            raise e
