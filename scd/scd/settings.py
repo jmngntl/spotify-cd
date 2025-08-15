@@ -9,8 +9,13 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
+import logging
 import os
 import sys
+import time
+
+from datetime import datetime, timezone
+from dotenv import load_dotenv
 from pathlib import Path
 
 
@@ -126,9 +131,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # environment variables for Spotify API, get client ID and secret from .env if running django app locally
 # defaults to Spotify for WebDev 'spotify-cd' project client ID and client secret
-if 'runserver' in sys.argv:
-    CLIENT_ID = os.environ.get('CLIENT_ID', '14c41bc44d824ca7891607a6537c1bb8')
-    CLIENT_SECRET = os.environ.get('CLIENT_SECRET', '17eaa77e309e48c7bacc9bd4b776ff64')
+# if 'runserver' in sys.argv:
+#     CLIENT_ID = os.environ.get('CLIENT_ID', '14c41bc44d824ca7891607a6537c1bb8')
+#     CLIENT_SECRET = os.environ.get('CLIENT_SECRET', '17eaa77e309e48c7bacc9bd4b776ff64')
+
+DJANGO_ENV = os.getenv('DJANGO_ENV', 'production')
+if DJANGO_ENV == 'local' or 'runserver' in sys.argv:
+    load_dotenv(BASE_DIR / '.env')
+    CLIENT_ID = os.getenv('CLIENT_ID')
+    CLIENT_SECRET = os.getenv('CLIENT_SECRET')
 
 # CLIENT_ID = '14c41bc44d824ca7891607a6537c1bb8'
 # CLIENT_SECRET = '17eaa77e309e48c7bacc9bd4b776ff64'
