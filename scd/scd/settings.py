@@ -9,8 +9,13 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
+import logging
 import os
 import sys
+import time
+
+from datetime import datetime, timezone
+from dotenv import load_dotenv
 from pathlib import Path
 
 
@@ -126,35 +131,48 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # environment variables for Spotify API, get client ID and secret from .env if running django app locally
 # defaults to Spotify for WebDev 'spotify-cd' project client ID and client secret
-if 'runserver' in sys.argv:
-    CLIENT_ID = os.environ.get('CLIENT_ID', '14c41bc44d824ca7891607a6537c1bb8')
-    CLIENT_SECRET = os.environ.get('CLIENT_SECRET', '17eaa77e309e48c7bacc9bd4b776ff64')
-
-# CLIENT_ID = '14c41bc44d824ca7891607a6537c1bb8'
-# CLIENT_SECRET = '17eaa77e309e48c7bacc9bd4b776ff64'
+DJANGO_ENV = os.getenv('DJANGO_ENV', 'production')
+if DJANGO_ENV == 'local' or 'runserver' in sys.argv:
+    load_dotenv(BASE_DIR / '.env')
+    CLIENT_ID = os.getenv('CLIENT_ID')
+    CLIENT_SECRET = os.getenv('CLIENT_SECRET')
 
 # logging configuration for temp file debug log
+class UtcFormatter(logging.Formatter): 
+    converter = time.gmtime
 
-# LOGGING = {
-#     "version": 1,
-#     "disable_existing_loggers": False,
-#     "handlers": {
-#         "file": {
-#             "level": "DEBUG",
-#             "class": "logging.FileHandler",
-#             "filename": "~/run-logs/debug.log",
-#         },
-#     },
-#     "loggers": {
-#         "django": {
-#             "handlers": ["file"],
-#             "level": "DEBUG",
-#             "propagate": True,
-#         },
-#         "scd": {
-#             "handlers": ["file", "console"],
-#             "level": "DEBUG",
-#             "propagate": True,
-#         }
-#     },
-# }
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'utc': {
+            '()': 'scd.settings.UtcFormatter',
+            'format': '[%(asctime)s] %(levelname)s %(name)s: %(message)s',
+        },
+    },
+    'handlers': {
+        'apilogfile': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/api_calls.log',
+            'formatter': 'utc',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'utc',
+        }
+    },
+    'loggers': {
+        'apilogger': {
+            'handlers': ['apilogfile'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'console': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        }
+    }
+}
