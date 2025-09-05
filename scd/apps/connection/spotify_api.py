@@ -22,7 +22,7 @@ class SpotifyApi():
         """
         playlists_endpoint
         if limit <= 0:
-            playlists_endpoint = "https://api.spotify.com/v1/users/{user_id}/playlists"
+            playlists_endpoint = f"https://api.spotify.com/v1/users/{user_id}/playlists"
         else:
             playlists_endpoint = f"https://api.spotify.com/v1/users/{user_id}/playlists?limit={limit}"
         playlists = oauth_session.get(playlists_endpoint)
