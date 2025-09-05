@@ -38,6 +38,8 @@ jobs:
     steps:
       - name: Checkout PR branch
         uses: actions/checkout@v4
+        with:
+          token: '${{ secrets.GITHUB_TOKEN}}'
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -46,12 +48,20 @@ jobs:
 
       - name: Install pipreqs
         run: pip install pipreqs
-
+      
       - name: Run pipreqs on PR branch
         run: |
-          pipreqs . --force
+          pipreqs ./ --ignore .venv,.env,venv --force
           cp requirements.txt pr-requirements.txt
 
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add requirements.txt
+          git diff --quiet --exit-code || git commit -m "Update requirements.txt with pipreqs on PR branch"
+          git push origin HEAD:${{ github.head_ref }}
+  
       - name: Checkout main branch
         run: |
           git fetch origin ${{ github.base_ref }}
