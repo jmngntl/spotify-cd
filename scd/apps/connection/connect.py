@@ -2,6 +2,7 @@ import collections
 import logging
 import secrets
 import httpx
+import webbrowser
 
 from datetime import datetime, timedelta
 from django.conf import settings
@@ -16,6 +17,7 @@ class SpotifyConnection():
         self.auth_url = 'https://accounts.spotify.com/authorize'
         self.token_url = 'https://accounts.spotify.com/api/token'
         self.redirect_uri = 'https://127.0.0.1:3000/callback'
+        self.refresh_token_url = ''
         self.client_id = settings.CLIENT_ID
         self.client_secret = settings.CLIENT_SECRET
         self.scope = [
@@ -82,17 +84,18 @@ class SpotifyConnection():
         spotify_client = self.initialize_client()
         try:
             # Authorize access to user data
-            auth_resp, auth_state = spotify_client.create_authorization_url(
+            user_auth_url, auth_state = spotify_client.create_authorization_url(
                 url=self.auth_url,
                 code_verifier=self.code_verifier  # use PKCE
             )
-
+            # TODO: connect to frontend here from user_auth_url, send response attrs back to fetch token
             # Fetch the access token
             token_data = spotify_client.fetch_token(
                 url=self.token_url,
                 auth=self.auth_info,
-                authorization_response=auth_resp,
+                # authorization_response=auth_resp,  # update auth resp here after frontend connection
                 state=auth_state,
+                grant_type='authorization_code'
             )
             # current_time = datetime.now()
             # expiration_time = current_time + timedelta(seconds=token_data.get('expires_in'))
@@ -121,3 +124,5 @@ class SpotifyConnection():
         except httpx.HTTPError as e:
             logger.error(f'Invalid HTTP response: {e}')
             raise e
+    
+    # def refresh_token(self):
