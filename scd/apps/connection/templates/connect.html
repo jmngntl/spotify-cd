@@ -26,6 +26,14 @@
 </head>
 <body>
     <h1>Spotify CD</h1>
-    <button>Login / Connect with Spotify</button>
+    <button id='login-btn' onclick="{{ oauth_html }}">Login / Connect with Spotify</button>
+
+    <script>
+        {% comment %} $(document).ready(function() {
+            $('#login-btn').click(function () {
+
+            })
+        }) {% endcomment %}
+    </script>
 </body>
 </html>
