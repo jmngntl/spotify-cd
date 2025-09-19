@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles'
+    'django.contrib.staticfiles',
+    'apps.connection'
 ]
 
 MIDDLEWARE = [
@@ -61,7 +62,7 @@ ROOT_URLCONF = 'scd.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'scd' / 'apps' / 'connection' / 'templates'],  # Add your templates directory here
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -141,38 +142,38 @@ if DJANGO_ENV == 'local' or 'runserver' in sys.argv:
 class UtcFormatter(logging.Formatter): 
     converter = time.gmtime
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'utc': {
-            '()': 'scd.settings.UtcFormatter',
-            'format': '[%(asctime)s] %(levelname)s %(name)s: %(message)s',
-        },
-    },
-    'handlers': {
-        'apilogfile': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'filename': 'logs/api_calls.log',
-            'formatter': 'utc',
-        },
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-            'formatter': 'utc',
-        }
-    },
-    'loggers': {
-        'apilogger': {
-            'handlers': ['apilogfile'],
-            'level': 'INFO',
-            'propagate': False,
-        },
-        'console': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': True,
-        }
-    }
-}
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'formatters': {
+#         'utc': {
+#             '()': 'scd.settings.UtcFormatter',
+#             'format': '[%(asctime)s] %(levelname)s %(name)s: %(message)s',
+#         },
+#     },
+    # 'handlers': {
+    #     'apilogfile': {
+    #         'level': 'INFO',
+    #         'class': 'logging.FileHandler',
+    #         'filename': 'logs/api_calls.log',
+    #         'formatter': 'utc',
+    #     },
+    #     'console': {
+    #         'level': 'DEBUG',
+    #         'class': 'logging.StreamHandler',
+    #         'formatter': 'utc',
+    #     }
+    # },
+    # 'loggers': {
+    #     'apilogger': {
+    #         'handlers': ['apilogfile'],
+    #         'level': 'INFO',
+    #         'propagate': False,
+    #     },
+    #     'console': {
+    #         'handlers': ['console'],
+    #         'level': 'DEBUG',
+    #         'propagate': True,
+    #     }
+    # }
+# }

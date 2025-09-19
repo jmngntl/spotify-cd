@@ -29,7 +29,8 @@ class SpotifyConnection():
         self.headers = {'Content-Type': 'application/x-www-form-urlencoded'}
         self.auth_info = HTTPBasicAuth(self.client_id, self.client_secret)
         self.code_verifier = self.generate_code_verifier()
-        self.client = self.login()
+        self.auth_popup = self.login()
+        self.client = None
 
     @staticmethod
     def generate_code_verifier():
@@ -82,30 +83,45 @@ class SpotifyConnection():
         Authorize access to user spotify data using OAuth2.
         """
         spotify_client = self.initialize_client()
+        self.client = spotify_client
         try:
             # Authorize access to user data
-            user_auth_url, auth_state = spotify_client.create_authorization_url(
+            auth_resp, auth_state = spotify_client.create_authorization_url(
                 url=self.auth_url,
                 code_verifier=self.code_verifier  # use PKCE
             )
+
+            redirect_request = httpx.Request('GET', auth_resp)
+            redirect_resp = spotify_client.send(redirect_request)
+            if redirect_resp.status_code == 303:
+                redirect_location = redirect_resp.headers['location']
+                redirect_req = httpx.Request('GET', redirect_location, headers={'Content-Type': 'application/json'})
+                oauth2_resp = spotify_client.send(redirect_req)
+                if oauth2_resp.status_code == httpx.codes.OK:
+                    oauth2_popup = oauth2_resp.text
+                    return oauth2_popup
+            else:
+                raise Exception(f'Error during OAuth2 authorization: {redirect_resp.status_code} - {redirect_resp.text}')
+            # print(user_auth_url)
+            # auth_resp = input(f'Paste the redirect uri after authorizationg here: {user_auth_url}')
             # TODO: connect to frontend here from user_auth_url, send response attrs back to fetch token
             # Fetch the access token
-            token_data = spotify_client.fetch_token(
-                url=self.token_url,
-                auth=self.auth_info,
-                # authorization_response=auth_resp,  # update auth resp here after frontend connection
-                state=auth_state,
-                grant_type='authorization_code'
-            )
+            # token_data = spotify_client.fetch_token(
+            #     url=self.token_url,
+            #     auth=self.auth_info,
+            #     authorization_response=user_auth_url,  # update auth resp here after frontend connection
+            #     state=auth_state,
+            #     # grant_type='authorization_code'
+            # )
             # current_time = datetime.now()
             # expiration_time = current_time + timedelta(seconds=token_data.get('expires_in'))
             # if current_time < expiration_time:
             #     token_data['is_expired'] = False
-            if token_data:
-                logger.info(f'Token data fetched successfully: {token_data}')
-            self.token_attrs = self.get_token_attrs(token_data)
-            spotify_client.token = self.token_attrs.access_token
-            return spotify_client
+            # if token_data:
+                # logger.info(f'Token data fetched successfully: {token_data}')
+            # self.token_attrs = self.get_token_attrs(token_data)
+            # spotify_client.token = self.token_attrs.access_token
+        #     return spotify_client
         except Exception as e:
             logger.error(f'Error during login: {e}')
             raise e

@@ -16,7 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.http import HttpResponse
+
+def home(request):
+    return HttpResponse("Welcome to the Spotify CD App!")
 
 urlpatterns = [
-    path('', include('scd_django.urls', namespace='scd'))
+    path('', home, name='home'),
+    path('admin/', admin.site.urls),
+    path('auth/', include('apps.connection.urls')),
+    # path('auth/', views.authenticate, name='authenticate')
 ]
