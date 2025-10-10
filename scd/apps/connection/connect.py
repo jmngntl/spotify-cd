@@ -95,11 +95,13 @@ class SpotifyConnection():
             redirect_resp = spotify_client.send(redirect_request)
             if redirect_resp.status_code == 303:
                 redirect_location = redirect_resp.headers['location']
-                redirect_req = httpx.Request('GET', redirect_location, headers={'Content-Type': 'application/json'})
-                oauth2_resp = spotify_client.send(redirect_req)
-                if oauth2_resp.status_code == httpx.codes.OK:
-                    oauth2_popup = oauth2_resp.text
-                    return oauth2_popup
+                
+                return redirect_location
+                # redirect_req = httpx.Request('GET', redirect_location, headers={'Content-Type': 'application/json'})
+                # oauth2_resp = spotify_client.send(redirect_req)
+                # if oauth2_resp.status_code == httpx.codes.OK:
+                #     oauth2_popup = oauth2_resp.text
+                #     return oauth2_popup
             else:
                 raise Exception(f'Error during OAuth2 authorization: {redirect_resp.status_code} - {redirect_resp.text}')
             # print(user_auth_url)
