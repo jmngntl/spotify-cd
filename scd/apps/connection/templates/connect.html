@@ -26,14 +26,14 @@
 </head>
 <body>
     <h1>Spotify CD</h1>
-    <button id='login-btn' onclick="{{ oauth_html }}">Login / Connect with Spotify</button>
+    <button id='login-btn' onclick='authRedirect()'>Login / Connect with Spotify</button>
 
     <script>
-        {% comment %} $(document).ready(function() {
-            $('#login-btn').click(function () {
-
-            })
-        }) {% endcomment %}
+        let loginBtn = document.getElementById('login-btn');
+        loginBtn.addEventListener('click', authRedirect)
+        function authRedirect() {
+            document.location.href = "{% url 'auth_redirect' %}";
+        }
     </script>
 </body>
 </html>
