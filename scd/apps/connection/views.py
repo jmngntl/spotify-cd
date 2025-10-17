@@ -7,20 +7,22 @@ from apps.connection.connect import SpotifyConnection
 logger = logging.getLogger(__name__)
 
 
-# def authenticate(request):
-#     # logger.debug("Starting auth process")
-#     # session = SpotifyConnection()
-#     # session_client = session.client
-#     # oauth = session.auth_popup
+def authenticate(request):
+    # logger.debug("Starting auth process")
+    # session = SpotifyConnection()
+    # session_client = session.client
+    # oauth = session.auth_popup
     
-#     context = {
-#         'oauth_html': None
-#     }
-#     return render(request, 'connect.html', context)
+    context = {
+        'oauth_html': None
+    }
+    return render(request, 'connect.html', context)
 
 def auth_redirect(request):
     session = SpotifyConnection()
     session_client = session.client
     oauth2_redirect = session.auth_popup
-    print(oauth2_redirect)  
+    print(oauth2_redirect)
+    # next_url = request.GET["next"]
+    # return redirect(next_url)
     return redirect(oauth2_redirect)

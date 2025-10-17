@@ -16,7 +16,7 @@ class SpotifyConnection():
     def __init__(self):
         self.auth_url = 'https://accounts.spotify.com/authorize'
         self.token_url = 'https://accounts.spotify.com/api/token'
-        self.redirect_uri = 'https://127.0.0.1:3000/callback'
+        self.redirect_uri = 'http://127.0.0.1:8000/callback'
         self.refresh_token_url = ''
         self.client_id = settings.CLIENT_ID
         self.client_secret = settings.CLIENT_SECRET

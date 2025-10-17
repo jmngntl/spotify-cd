@@ -32,7 +32,7 @@
         let loginBtn = document.getElementById('login-btn');
         loginBtn.addEventListener('click', authRedirect)
         function authRedirect() {
-            document.location.href = "{% url 'auth_redirect' %}";
+            document.location.href = "{% url 'auth_redirect' %}?next={{request.path}}";
         }
     </script>
 </body>
