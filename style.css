@@ -1,0 +1,166 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+    height: 100vh;
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+/* .gradient-bg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 650px;
+    height: 650px;
+    border-radius: 100%;
+    background-image: linear-gradient(#1100ff 10%, #ff00f2);
+    filter: blur(250px);  */
+    /* transition: all 450ms ease-out; */
+    /* animation: gradient 15s ease infinite; */
+    /* background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+
+    position: fixed;
+    pointer-events: none;
+    left: 0;
+    top: 0;
+    transform: translate(calc(-50% + 15px), -50%);
+    z-index: -1;
+}  */
+
+.menu-container {
+    /* float: right; */
+    /* border-style: solid;
+    border-color: yellow; */
+    float: right;
+    padding: 10px;
+}
+
+.main {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-container {
+    text-align: center;
+}
+
+.nav-container img {
+    display: flex;
+    margin: auto;
+
+}
+
+.nav-container h1 {
+    margin-top: 10px;
+    color: #fff;
+    font-size: 40px;
+    font-family: "Bagel Fat One", system-ui;
+}
+
+
+
+.middle-container {
+    display: inline;
+    /* border: red;
+    border-style: solid; */
+}
+
+.buttons-container {
+    /* Optional: Styles for the container if you're using one */
+    /* padding-top: 40px; */
+    /* border-style: solid; 
+    border-color: blue; */
+    /* align-items: center; */
+    /* display: flex; */
+    padding-left: 30px;
+    padding-right: 35%;
+}
+
+.btn-group {
+    /* Add other styling properties here */
+    /* background-color: #04AA6D;
+    border: 1px solid green; */
+    /* color: white; */
+    background-image: url('img/radio-icon.png');
+    background-size: cover; /* Adjust as needed for image fitting */
+    background-position: center;
+    background-color: transparent;
+    background-repeat:no-repeat;
+    width: 50px;
+    height: 50px;
+    padding: 10px 24px;
+    /* margin: 30px; */
+    margin-top: 50px;
+    cursor: pointer;
+    display: block;
+    /* border-radius: 10px; */
+    border: none;
+    transition: all 0.4s;
+}
+
+.btn-group:hover {
+    transform: scale(1.3);
+}
+
+.btn-group:nth-of-type(2) {
+  background-image: url('img/cd-icon.png');
+  /* background-color: #23d5ab; */
+}
+
+.btn-group:nth-of-type(3) {
+  background-image: url('img/walkman-icon.png');
+}
+
+.btn-group:nth-of-type(4) {
+  background-image: url('img/rp-icon.png');
+}
+
+/* .container {
+    display: inline-block;
+    cursor: pointer;
+} */
+
+.bar1, .bar2, .bar3 {
+    width: 35px;
+    height: 5px;
+    background-color: #fff;
+    margin: 6px 0;
+    transition: 0.4s;
+    border-radius: 10px;
+    }
+
+/* Rotate first bar */
+.change .bar1 {
+    transform: translate(0, 11px) rotate(-45deg);
+}
+
+/* Fade out the second bar */
+.change .bar2 {opacity: 0;}
+
+/* Rotate last bar */
+.change .bar3 {
+transform: translate(0, -11px) rotate(45deg);
+}
+
