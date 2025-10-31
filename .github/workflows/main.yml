@@ -1,0 +1,83 @@
+name: Compare Python Dependencies from main and PR branch
+on:
+  pull_request:
+    branches:
+      -  main
+    paths:
+      - '**/*.py'
+      - 'requirements.txt'
+
+env:
+  ACTIONS_STEP_DEBUG: true
+
+jobs:
+  check-python-changes-on-pr:
+    runs-on: ubuntu-latest
+    outputs:
+      py_files_changed: ${{ steps.changed-python-files.outputs.any_changed }}
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+      
+      - name:  Check PR branch for New/Modified Python Files
+        uses: tj-actions/changed-files@v46
+        id: changed-python-files
+        with:
+          files: |
+            **/*.py
+      
+  compare-package-dependencies:
+    needs: check-python-changes-on-pr
+    if: needs.check-python-changes-on-pr.outputs.py_files_changed == 'true'
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        python-version: ['3.10', '3.13']
+        
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          token: '${{ secrets.GITHUB_TOKEN}}'
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install pipreqs
+        run: pip install pipreqs
+      
+      - name: Run pipreqs on PR branch
+        run: |
+          pipreqs ./ --ignore .venv,.env,venv --force
+          cp requirements.txt pr-requirements.txt
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add requirements.txt
+          git diff --quiet --exit-code || git commit -m "Update requirements.txt with pipreqs on PR branch"
+          git push origin HEAD:${{ github.head_ref }}
+  
+      - name: Checkout main branch
+        run: |
+          git fetch origin ${{ github.base_ref }}
+          git checkout origin/${{ github.base_ref }}
+
+      - name: Run pip reqs on main branch
+        run: |
+          pip install pipreqs
+          pipreqs . --force
+          cp requirements.txt base-requirements.txt
+
+      - name: Compare requirements between PR branch and main branch
+        run: |
+          echo "New pip packages added in PR:"
+          comm -13 <(sort base-requirements.txt) <(sort pr-requirements.txt) || true
+          echo "Packages removed in PR:"
+          comm -23 <(sort base-requirements.txt) <(sort pr-requirements.txt) || true
+
+

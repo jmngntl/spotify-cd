@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            background: radial-gradient(circle at center, #ff9a9e, #fad0c4);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            transition: background 0.1s;
+        }
+
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        #tsparticles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        #waveCanvas {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        body::before {
+            content: "";
+            position: absolute; inset: 0;
+            backdrop-filter: blur(1px);
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="waveCanvas"></canvas>
+    <div id="tsparticles"></div>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@3/tsparticles.bundle.min.js"></script>
+    <script>
+        // Load floating particles
+        tsParticles.load("tsparticles", {
+            fullScreen: {enable: true},
+            particles: {
+                number: {value: 80, density: {enable: true, area: 800}},
+                color: { value: ["#FF0088", "#00FFAA", "#8800FF"] },
+                shape: { type: ["circle", "triangle", "star"] },
+                opacity: { value: 0.7 },
+                size: { value: {min: 2, max: 6 } },
+                move: {
+                    enable: true,
+                    speed: 1.5,
+                    direction: "none",
+                    //random: false,
+                    //straight: false,
+                    outModes: "out"
+                }
+            },
+            interactivity: {
+                events: {
+                    onHover: { enable: true, mode: "bubble "},
+                    resize: true
+                },
+                modes: {
+                    bubble: {distance: 100, size: 10, duration: 2}
+                }
+            },
+            background: {color: "transparent"}
+        });
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / innerWidth * 100).toFixed(1);
+            const y = (e.clientY / innerHeight * 100).toFixed(1);
+
+            document.body.style.background = `radial-gradient(circle at ${x}% ${y}%, #ff9a9e, #fad0c4)`;
+
+           /* // slightly adjust gradient focus based on mouse position    
+            const posX = (x * 100).toFixed(1);
+            const posY = (y * 100).toFixed(1);
+
+            document.body.style.background = `radial-gradient(circle at ${posX}% ${posY}%, #ff9a9e, #fad0c4)`;
+
+            document.body.style.backgroundSize = "400% 400%";
+
+             const r = Math.floor(30 + 100 * x);
+            const g = Math.floor(144 + 100 * y);
+            const b = 255;
+
+            document.body.style.background = `radial-gradient(circle at ${x * 100}% ${y * 100}%, rgb(${r}, ${g}, ${b}), #000)`; */
+        });
+
+        // canvas wave effect
+        const waveCanvas = document.getElementById("waveCanvas");
+        const wctx = waveCanvas.getContext("2d");
+        function resizeCanvas() {
+            waveCanvas.width = innerWidth;
+            waveCanvas.height = innerHeight;
+        }
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas();
+
+        const waveCount = 3;
+        const waveColors = ["rgba(0,255,255,0.2)", "rgba(0,200,255,0.3)", "rgba(0,150,255,0.4)"];
+        let tick = 0;
+
+        function drawWaves() {
+            wctx.clearRect(0, 0, waveCanvas.width, waveCanvas.height);
+            tick += 0.02;
+            for (let j = 0; j < waveCount; j++) {
+        wctx.fillStyle = waveColors[j];
+        wctx.beginPath();
+        wctx.moveTo(0, waveCanvas.height);
+        const offset = j * 30;
+        for (let x = 0; x <= waveCanvas.width; x++) {
+          const y = Math.sin((x * 0.01) + tick + offset) * 20 + waveCanvas.height / (2 + j);
+          wctx.lineTo(x, y);
+        }
+        wctx.lineTo(waveCanvas.width, waveCanvas.height);
+        wctx.closePath();
+        wctx.fill();
+      }
+      requestAnimationFrame(drawWaves);
+    }
+    drawWaves();
+    </script>
+
+</body>
+</html>
