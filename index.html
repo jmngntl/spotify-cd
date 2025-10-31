@@ -4,48 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>soundify</title>
+    <link rel="icon" type="image/x-icon" href="img/soundify-circle.png">
     <link rel="stylesheet" href="style.css">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&display=swap" rel="stylesheet">
 </head>
-
 <body>
-    <div class="container">
-        <header class="header">
-            <nav role="navigation">
-                <h1>soundify</h1>
-                
-                <div id="menuToggleLeft">
-                    <div class="btn-container">
-                        <button id="cd-player"><img src="http://thinkingstiff.com/images/matt.jpg"></button>
-                    </div>
-                </div>
+    <div class="gradient-bg"></div>
+    <!-- possibly contain menu button and h1 in a header? -->
+    <div class="menu-container" onclick="myFunction(this)">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+    </div>
+    <nav class="nav-container">
+        <h1>soundify</h1>
+        <img src="/test/img/cd_player1.png" alt="main image">
+    </nav>
 
-                <div id="menuToggle">
-                    <input type="checkbox" id="menuCheckbox"/>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <ul id="menu">
-                        <li>
-                            <a href="#">
-                                <label for="menuCheckbox" onclick="this.parentNode.click();">Home</label>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#about">
-                                <label for="menuCheckbox" onclick="this.parentNode.click()";>About</label>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        </header>
+    <!-- put cd container or img src in buttons container or keep it seperate so it's in line? -->
+<!-- <div class="middle-container">
+    <div class="buttons-container">
+        <button class="btn-group"></button>
+        <button class="btn-group"></button>
+        <button class="btn-group"></button>
+        <button class="btn-group"></button>    
     </div>
-    <div class="image-container">
-            <img src="cd.png" width="400" height="400" alt="Interactive Image">
-    </div>
+</div> -->
+<script>
+    // Example: Adding a class on button click
+    const button = document.querySelector('.btn-group');
+    button.addEventListener('click', () => {
+    button.classList.add('active'); // Assuming you have an 'active' class in CSS
+    });
+
+    function myFunction(x) {
+    x.classList.toggle("change");
+    }
+
+    var cursor = document.querySelector('.gradient-bg');
+
+    document.addEventListener('mousemove', function(e){
+    var x = e.clientX;
+    var y = e.clientY;
+    cursor.style.transform = `translate3d(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%), 0)`
+    });
+</script>
 </body>
 </html>

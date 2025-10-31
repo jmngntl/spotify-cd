@@ -1,22 +1,14 @@
-container {
-    background-color: beige;
-    display: flex;
-    justify-content: center;
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
 }
 
 body {
-	background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-	background-size: 400% 400%;
-	animation: gradient 15s ease infinite;
-	height: 100vh;
-}
-
-h1 {
-    font-family: "Bagel Fat One", system-ui;
-    font-size: 40px;
-    text-align: center;
-    color:#23d5ab;
-    margin-top: 15px;
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+    height: 100vh;
 }
 
 @keyframes gradient {
@@ -31,250 +23,144 @@ h1 {
 	}
 }
 
-main {
-  width: calc(100% - 240px);
-  max-width: 680px;
-  margin: 100px auto;
+/* .gradient-bg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 650px;
+    height: 650px;
+    border-radius: 100%;
+    background-image: linear-gradient(#1100ff 10%, #ff00f2);
+    filter: blur(250px);  */
+    /* transition: all 450ms ease-out; */
+    /* animation: gradient 15s ease infinite; */
+    /* background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+
+    position: fixed;
+    pointer-events: none;
+    left: 0;
+    top: 0;
+    transform: translate(calc(-50% + 15px), -50%);
+    z-index: -1;
+}  */
+
+.menu-container {
+    /* float: right; */
+    /* border-style: solid;
+    border-color: yellow; */
+    float: right;
+    padding: 10px;
 }
 
-p {
-  font-size: 18px;
-  line-height: 28px;
+.main {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-* {
-  scroll-behavior: smooth;
+.nav-container {
+    text-align: center;
 }
 
-.container {
-  display: flex;
-  justify-content: center; /* Centers items horizontally */
-  align-items: center; /* Centers items vertically (if needed) */
-}
-
-/* 
-/* Menu code starts here */
-
-#menuToggle
-{
-  display: block;
-  /* You can also use relative/absolute here if you want to stay on the top */
-  position: fixed;
-  top: 50px;
-  right: 50px;
-  
-  z-index: 1;
-  
-  -webkit-user-select: none;
-  user-select: none;
-}
-
-#menuToggle a
-{
-  text-decoration: none;
-  /* color: #232323; */
-  color: #23d5ab;
-  transition: color 0.3s ease;
-}
-
-#menuToggle a:hover
-{
-  color: tomato;
-}
-
-
-#menuToggle input
-{
-  display: block;
-  width: 40px;
-  height: 32px;
-  position: absolute;
-  top: -7px;
-  right: -5px;
-  
-  cursor: pointer;
-  
-  opacity: 0; /* hide this */
-  z-index: 2; /* and place it over the hamburger */
-  
-  -webkit-touch-callout: none;
-}
-
-/*
- * Just a quick hamburger
- */
-#menuToggle span
-{
-  display: block;
-  width: 33px;
-  height: 4px;
-  margin-bottom: 5px;
-  position: relative;
-  
-  background: #23d5ab;
-  border-radius: 3px;
-  
-  z-index: 1;
-  
-  transform-origin: 4px 0px;
-  
-  transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
-  background 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
-  opacity 0.55s ease;
-}
-
-#menuToggle span:first-child
-{
-  transform-origin: 0% 0%;
-}
-
-#menuToggle span:nth-last-child(2)
-{
-  transform-origin: 0% 100%;
-}
-
-/* 
- * Transform all the slices of hamburger
- * into a crossmark.
- */
-#menuToggle input:checked ~ span
-{
-  opacity: 1;
-  transform: rotate(45deg) translate(-2px, -1px);
-  background: #23d5ab;
-}
-
-/*
- * But let's hide the middle one.
- */
-#menuToggle input:checked ~ span:nth-last-child(3)
-{
-  opacity: 0;
-  transform: rotate(0deg) scale(0.2, 0.2);
-}
-
-/*
- * Ohyeah and the last one should go the other direction
- */
-#menuToggle input:checked ~ span:nth-last-child(2)
-{
-  transform: rotate(-45deg) translate(0, -1px);
-}
-
-/*
- * Make this absolute positioned
- * at the top left of the screen
- */
-#menu
-{
-  position: absolute;
-  max-width: 400px;
-  width: 100vw;
-  max-height: 100vh;
-  margin: -100px 0 0 -50px;
-  padding: 50px;
-  padding-top: 125px;
-  box-sizing: border-box;
-  overflow-y: auto;
-  /* background: #ededed; */
-  list-style-type: none;
-  -webkit-font-smoothing: antialiased;
-  /* to stop flickering of text in safari */
-  
-  transform-origin: 0% 0%;
-  transform: translate(100%, 0);
-  
-  transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
-}
-
-#menu li
-{
-  padding: 10px 0;
-  font-size: 22px;
-  font-family: "Bagel Fat One", system-ui;
-  
+.nav-container img {
+    display: flex;
+    margin: auto;
 
 }
 
-#menu li label
-{
-  cursor: pointer;
+.nav-container h1 {
+    margin-top: 10px;
+    color: #fff;
+    font-size: 40px;
+    font-family: "Bagel Fat One", system-ui;
 }
 
-/*
- * And let's slide it in from the left
- */
-#menuToggle input:checked ~ ul
-{
-  transform: none;
+
+
+.middle-container {
+    display: inline;
+    /* border: red;
+    border-style: solid; */
 }
 
-.image-container {
-  display: flex;
-  justify-content: center;
-  padding: 85px;
+.buttons-container {
+    /* Optional: Styles for the container if you're using one */
+    /* padding-top: 40px; */
+    /* border-style: solid; 
+    border-color: blue; */
+    /* align-items: center; */
+    /* display: flex; */
+    padding-left: 30px;
+    padding-right: 35%;
 }
 
-img {
-  animation: float 6s ease-in-out infinite;
+.btn-group {
+    /* Add other styling properties here */
+    /* background-color: #04AA6D;
+    border: 1px solid green; */
+    /* color: white; */
+    background-image: url('img/radio-icon.png');
+    background-size: cover; /* Adjust as needed for image fitting */
+    background-position: center;
+    background-color: transparent;
+    background-repeat:no-repeat;
+    width: 50px;
+    height: 50px;
+    padding: 10px 24px;
+    /* margin: 30px; */
+    margin-top: 50px;
+    cursor: pointer;
+    display: block;
+    /* border-radius: 10px; */
+    border: none;
+    transition: all 0.4s;
 }
 
-@keyframes float {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
-  100% { transform: translateY(0); }
+.btn-group:hover {
+    transform: scale(1.3);
 }
 
-#menuToggleLeft
-{
-  display: block;
-  /* You can also use relative/absolute here if you want to stay on the top */
-  position: fixed;
-  top: 50px;
-  left: 0em;
+.btn-group:nth-of-type(2) {
+  background-image: url('img/cd-icon.png');
+  /* background-color: #23d5ab; */
 }
 
-#menuLeft
-{
-  position: absolute;
-  max-width: 400px;
-  width: 100vw;
-  max-height: 100vh;
-  margin: -100px 0 0 -50px;
-  padding: 50px;
-  padding-top: 125px;
-  box-sizing: border-box;
-  overflow-y: auto;
-  /* background: #ededed; */
-  list-style-type: none;
-  -webkit-font-smoothing: antialiased;
-  /* to stop flickering of text in safari */
-  
-  transform-origin: 0% 0%;
-  transform: translate(100%, 0);
-  
-  transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+.btn-group:nth-of-type(3) {
+  background-image: url('img/walkman-icon.png');
 }
 
-/* #menuLeft li
-{
-  padding: 10px 0;
-  font-size: 22px;
-  font-family: "Bagel Fat One", system-ui;
-  
-
+.btn-group:nth-of-type(4) {
+  background-image: url('img/rp-icon.png');
 }
 
-#menu li label
-{
-  cursor: pointer;
+/* .container {
+    display: inline-block;
+    cursor: pointer;
 } */
 
-.btn-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  height: 100px;
-  
+.bar1, .bar2, .bar3 {
+    width: 35px;
+    height: 5px;
+    background-color: #fff;
+    margin: 6px 0;
+    transition: 0.4s;
+    border-radius: 10px;
+    }
+
+/* Rotate first bar */
+.change .bar1 {
+    transform: translate(0, 11px) rotate(-45deg);
 }
+
+/* Fade out the second bar */
+.change .bar2 {opacity: 0;}
+
+/* Rotate last bar */
+.change .bar3 {
+transform: translate(0, -11px) rotate(45deg);
+}
+

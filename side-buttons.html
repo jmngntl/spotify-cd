@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .left-buttons-container {
+        /* Optional: Styles for the container if you're using one */
+        }
+
+        .left-btn {
+        float: left; /* Align button to the left */
+        /* Add other styling properties here */
+        background-color: #04AA6D;
+        border: 1px solid green;
+        color: white;
+        padding: 10px 24px;
+        cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="left-buttons-container">
+        <button class="left-btn">Button 1</button>
+        <button class="left-btn">Button 2</button>
+    </div>
+<script>
+    // Example: Adding a class on button click
+    const button = document.querySelector('.left-btn');
+    button.addEventListener('click', () => {
+    button.classList.add('active'); // Assuming you have an 'active' class in CSS
+    });
+</script>
+</body>
+</html>
